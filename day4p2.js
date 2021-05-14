@@ -1,6 +1,17 @@
+// FAILED WITH 192 answare
+
 const fs = require(`fs`)
 const performance = require(`perf_hooks`).performance
 const chalk = require(`chalk`)
+
+let regByr = /^19[2-9]\d$|^200[0-2]$/gm,
+        regIyr = /^201\d$|^2020$/gm,
+        regEyr = /^202\d$|^2030$/gm,
+        regHgt = /^1[5-8]\dcm$|^19[1-3]cm$|^59in$|^6\din$|^7[0-6]in$/gm,
+        regHcl = /^#[a-f0-9]{6}$/gm,
+        regEcl = /^amb$|^blu$|^brn$|^gry$|^grn$|^hzl$|^oth$/gm,
+        regPid = /^\d{9}$/gm;
+
 
 let input = process.argv[2];
 
@@ -42,31 +53,48 @@ function validatePassport(pList){
             let itemP = e.split(`:`);
             passport[itemP[0,0]] = itemP[0,1];
         })
+
+        let matchByr = regByr.exec(passport[`byr`]),
+        matchIyr = regIyr.exec(passport[`iyr`]),
+        matchEyr = regEyr.exec(passport[`eyr`]),
+        matchHgt = regHgt.exec(passport[`hgt`]),
+        matchHcl = regHcl.exec(passport[`hcl`]),
+        matchEcl = regEcl.exec(passport[`ecl`]),
+        matchPid = regPid.exec(passport[`pid`]);
         
-        if(passport[`byr`]){
+        if(matchByr){
             credCount++
-        }if(passport[`iyr`]){
+        }
+        if(matchIyr){
             credCount++
-        }if(passport[`eyr`]){
+        }
+        if(matchEyr){
             credCount++
-        }if(passport[`hgt`]){
+        }
+        if(matchHgt){
             credCount++
-        }if(passport[`hcl`]){
+        }
+        if(matchHcl){
             credCount++
-        }if(passport[`ecl`]){
+        }
+        if(matchEcl){
             credCount++
-        }if(passport[`pid`]){
-            credCount++
-        }if(passport[`cid`]){
-            credCount++
-        }else{
+        }
+        if(matchPid){
             credCount++
         }
 
-        if(credCount == 8){
+        if(credCount == 7){
             //console.log(passport)
             validPassps.push(passport)
         }
+        regByr.lastIndex = 0;
+        regIyr.lastIndex = 0;
+        regEyr.lastIndex = 0;
+        regHgt.lastIndex = 0;
+        regHcl.lastIndex = 0;
+        regEcl.lastIndex = 0;
+        regPid.lastIndex = 0;
 
     }
 
