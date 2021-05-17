@@ -14,8 +14,9 @@ fs.readFile(numFile,`utf-8`, function(error, data){
     let codes = data.split(`\r\n`);
 
     var t1 = performance.now()
-    let max = getMax(getSeatID(codes))
-    console.log(max)
+    let ids = getSeatID(codes)
+    console.log(getMax(ids))
+    console.log(getMySeat(ids))
     var t2 = performance.now()
     console.log(`Call to getSeatId took ${t2-t1} milliseconds.`)
 })
@@ -78,5 +79,26 @@ function getSeatID(codes){
         ids.push((result1-1) * 8 + (result2-1))
         
     }
+
+    
     return ids
 } 
+
+//part2
+
+function getMySeat(ids){
+
+    let sortedIds = ids.sort((a,b) =>{
+        if(a>b) return 1
+        if(a<b) return -1
+        return 0
+    });
+
+
+    for (let i = 0; i < ids.length; i++) {
+        if((sortedIds[i]+1)!=sortedIds[i+1]){
+            console.log(`Found yer seat seat:${sortedIds[i]+1}:${sortedIds[i+1]}`)
+        }
+
+    }
+}
